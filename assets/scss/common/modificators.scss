@@ -1,0 +1,15 @@
+.-text-center {
+    text-align: center;
+}
+
+.-hidden {
+    display: none !important;
+}
+
+@each $name, $size in $media-sizes {
+    @media (max-width: $size) {
+        .-hidden_#{$name} {
+            display: none !important;
+        }
+    }
+}

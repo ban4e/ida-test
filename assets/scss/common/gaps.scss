@@ -1,0 +1,40 @@
+$mb-gap: (
+        'none': 0,
+        'tiny': 8px,
+        'xtiny': 16px,
+        'xxtiny': 24px,
+        'small': 32px,
+        'xsmall': 40px,
+        'xxsmall': 48px,
+        'medium': 56px,
+        'xmedium': 64px,
+        'xxmedium': 72px,
+        'large': 80px,
+        'xlarge': 88px,
+        'xxlarge': 96px
+);
+
+@each $name, $gap in $mb-gap {
+    .-mb_#{$name} {
+        margin-bottom: $gap;
+    }
+}
+
+@each $name, $gap in $mb-gap {
+    .-mb_#{$name}_negative {
+        margin-bottom: -$gap;
+    }
+}
+
+@each $name, $size in $media-sizes {
+    @media (max-width: $size) {
+        @each $gapName, $gap in $mb-gap {
+            .-mb_#{$name}_#{$gapName} {
+                margin-bottom: $gap;
+            }
+            .-mb_#{$name}_#{$gapName}_negative {
+                margin-bottom: -$gap;
+            }
+        }
+    }
+}

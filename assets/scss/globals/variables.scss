@@ -1,0 +1,70 @@
+// palette
+$color-turquoise-400: #00c7d2;
+
+
+$color-gray-600: #979797;
+$color-gray-500: #9EAAAE;
+$color-gray-400: #9EA8B3;
+$color-gray-300: #C4CAD6;
+$color-gray-200: #D7DBE0;
+$color-gray-100: #E1E5E6;
+
+$color-black-900: #000000;
+$color-black-700: #020417;
+$color-black-300: #333333;
+
+$color-white-900: #FFFFFF;
+$color-white-800: #FBF5F3;
+
+$color-green-400: #42B54E;
+
+$color-red-900: #FF0000;
+$color-red-500: #FE420F;
+
+$color-deep-blue-900: #060517;
+$color-deep-blue-700: #2a0c30;
+$color-deep-blue-600: #1e203b;
+$color-deep-blue-500: #2A2D53;
+
+
+$color-blue-700: #5458F7;
+$color-blue-500: #2D7FBD;
+
+$color-yellow-500: #FFC000;
+
+// color scheme
+$color-black: $color-black-900;
+$color-white: $color-white-900;
+
+$color-primary: $color-blue-700;
+$color-text: $color-white;
+$color-subtext: $color-gray-400;
+$color-danger: $color-red-500;
+$color-success: $color-green-400;
+
+//transitions
+$transition-main: .3s cubic-bezier(.16,.16,.40,.82);
+$transition-fast: .18s cubic-bezier(.16,.16,.40,.82);
+
+//font
+$font-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-codec: "Codec Pro";
+$font-main: $font-codec, $font-fallback;
+$root-font-size: 10px;
+$font-size: 16px;
+
+//grid
+$container-max-width: 1180px;
+$grid-columns-count: 12;
+$grid-gap: 16px;
+$grid-gap-small: 12px;
+
+//media
+$media-xl: 1600px;
+$media-lg: 1280px;
+$media-md: 992px;
+$media-sm: 767px;
+$media-xs: 576px;
+$media-xxs: 420px;
+
+$media-sizes: ('xl': $media-xl, 'lg': $media-lg, 'md': $media-md, 'sm': $media-sm, 'xs': $media-xs, 'xxs': $media-xxs);
