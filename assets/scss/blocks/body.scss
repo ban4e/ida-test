@@ -9,7 +9,10 @@
         flex: 0 0 auto;
     }
     &__container {
+        display: flex;
+        flex-direction: column;
         flex: 1 1 auto;
+        padding-bottom: 48px;
     }
 }
 

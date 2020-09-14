@@ -1,22 +1,11 @@
-// palette
-//$color-turquoise-400: #00c7d2;
-
-
 $color-gray-700: #677B8F;
 $color-gray-500: #99A7B5;
-//$color-gray-500: #9EAAAE;
-//$color-gray-400: #9EA8B3;
-//$color-gray-300: #C4CAD6;
-//$color-gray-200: #D7DBE0;
 $color-gray-100: #F3F4F7;
 
 $color-black-900: #000000;
 
-//$color-black-700: #020417;
-//$color-black-300: #333333;
-
 $color-white-900: #FFFFFF;
-//$color-white-800: #FBF5F3;
+$color-white-800: #FCFCFC;
 
 $color-green-400: #42B54E;
 
@@ -24,16 +13,12 @@ $color-red-900: #FF0000;
 $color-red-500: #FE420F;
 
 $color-rose-500: #F71D9F;
+$color-rose-400: #F84AB3;
 
 $color-deep-blue-900: #012345;
-//$color-deep-blue-700: #2a0c30;
-//$color-deep-blue-600: #1e203b;
-//$color-deep-blue-500: #2A2D53;
 
 
 $color-blue-500: #4959FF;
-
-//$color-yellow-500: #FFC000;
 
 // color scheme
 $color-black: $color-black-900;
@@ -41,7 +26,6 @@ $color-white: $color-white-900;
 
 
 $color-text: $color-gray-700;
-//$color-subtext: $color-gray-400;
 $color-link: $color-blue-500;
 $color-danger: $color-red-500;
 $color-success: $color-green-400;
@@ -61,7 +45,7 @@ $font-size: 16px;
 $container-max-width: 1312px;
 $grid-columns-count: 12;
 $grid-gap: 16px;
-$grid-gap-small: 12px;
+$grid-gap-small: 6px;
 
 //media
 $media-xl: 1600px;

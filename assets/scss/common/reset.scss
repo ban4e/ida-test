@@ -65,6 +65,14 @@ html {
     font-family: $font-main;
     font-size: $root-font-size;
     color: $color-text;
+
+}
+
+@media (pointer: fine) { // scrollbar issue
+    html {
+        margin-left: calc(100vw - 100%);
+        margin-right: 0;
+    }
 }
 
 body {

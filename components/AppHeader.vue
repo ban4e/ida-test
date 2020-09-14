@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header grid-block">
         <div class="header__container grid-container">
             <a href="javascript:void(0)" class="header__logo">
                 <base-icon name="logo" class="header__logo-icon"/>
@@ -43,6 +43,9 @@
     .header {
         padding-top: 48px;
         color: $color-gray-500;
+        @include media-breakpoint-down(sm) {
+            padding-top: 12px;
+        }
         &__container {
             display: flex;
             align-items: center;
@@ -50,20 +53,40 @@
         &__logo {
             flex: 0 0 auto;
             margin-right: 65px;
+            @include media-breakpoint-down(md) {
+                margin-right: 32px;
+            }
             &-icon {
                 fill: var(--color-caption);
+            }
+        }
+        &__note {
+            @include media-breakpoint-down(lg) {
+                display: none;
             }
         }
         &__switcher {
             margin-left: auto;
             margin-right: 105px;
+            @include media-breakpoint-down(md) {
+                margin-right: 64px;
+            }
+            @include media-breakpoint-down(sm) {
+                margin-right: 16px;
+            }
         }
         &__actions {
             display: flex;
             align-items: center;
             margin-right: 56px;
+            @include media-breakpoint-down(sm) {
+                margin-right: 24px;
+            }
             &-item {
                 margin-right: 26px;
+                @include media-breakpoint-down(sm) {
+                    margin-right: 16px;
+                }
                 &:last-child {
                     margin-right: 0;
                 }
@@ -79,6 +102,9 @@
                 font-weight: bold;
                 margin-right: 16px;
                 transition: $transition-fast;
+                @include media-breakpoint-down(sm) {
+                    display: none;
+                }
                 &:hover {
                     color: $color-rose-500;
                 }
@@ -90,6 +116,10 @@
                 width: 56px;
                 border-radius: 50%;
                 background: $color-gray-100 center center/cover no-repeat;
+                @include media-breakpoint-down(sm) {
+                    flex: 0 0 32px;
+                    width: 32px;
+                }
                 &::before {
                     content: '';
                     display: block;

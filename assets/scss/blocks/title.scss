@@ -1,0 +1,8 @@
+h1, .title-h1 {
+    @include rhythm(40px, 48px);
+    font-weight: 700;
+    color: var(--color-caption);
+    @include media-breakpoint-down(sm) {
+        @include rhythm(24px, 29px);
+    }
+}

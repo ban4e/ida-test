@@ -38,6 +38,14 @@
             flex: 0 0 auto;
             margin-right: 16px;
             fill: $color-gray-500;
+            @include media-breakpoint-down(sm) {
+                margin-right: 0;
+            }
+        }
+        &__title {
+            @include media-breakpoint-down(sm) {
+                display: none;
+            }
         }
     }
 </style>

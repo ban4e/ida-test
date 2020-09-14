@@ -1,9 +1,15 @@
 <template>
-    <h1 class="-mb_small -text-center">NUXT STARTER PACK</h1>
+    <div class="grid-block">
+        <app-catalog class="grid-container"/>
+    </div>
 </template>
 
-<style lang="scss">
-    h1 {
-        color: $color-deep-blue-900;
+<script>
+    import AppCatalog from '@/components/AppCatalog.vue';
+
+    export default {
+        components: {
+            AppCatalog
+        }
     }
-</style>
+</script>

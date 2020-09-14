@@ -1,3 +1,9 @@
+.grid-block {
+    box-sizing: content-box;
+    padding-left: $grid-gap;
+    padding-right: $grid-gap;
+}
+
 .grid-container {
     max-width: $container-max-width;
     margin-left: auto;
