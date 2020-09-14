@@ -1,7 +1,5 @@
 <template>
-    <div class="grid-block">
-        <app-catalog class="grid-container"/>
-    </div>
+    <app-catalog/>
 </template>
 
 <script>

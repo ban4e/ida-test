@@ -1,31 +1,34 @@
 <template>
-    <div class="catalog" :class="{'is-error': isFetchError}">
-        <div class="catalog__error" v-if="isFetchError">
-            <div class="catalog__error-title title-h1 -mb_xxtiny">An error has occurred</div>
-            <div class="catalog__error-description -mb_xsmall">Please refresh the page</div>
-            <base-button @click.native.prevent="reloadData" ref="reloadButton">Reload page</base-button>
-        </div>
-        <div class="catalog__container" v-else>
-            <div class="catalog__header">
-                <div class="catalog__filter">
-                    <div class="catalog__filter-title title-h1">Rent&nbsp;</div>
-                    <app-filter class="catalog__filter-select" @filterChange="onFilterChange">
-                        <base-select name="type" :options="productTypes" class="title-h1"/>
-                    </app-filter>
-                </div>
-                <div class="catalog__actions">
-                    <!-- TODO: add product -->
-                </div>
+    <div class="grid-block catalog-wrapper">
+        <div class="catalog catalog_full catalog_grow grid-container" :class="{'is-error': isFetchError}">
+            <div class="catalog__error" v-if="isFetchError">
+                <div class="catalog__error-title title-h1 -mb_xxtiny">An error has occurred</div>
+                <div class="catalog__error-description -mb_xsmall">Please refresh the page</div>
+                <base-button @click.native.prevent="reloadData" ref="reloadButton">Reload page</base-button>
             </div>
-            <div class="catalog__body">
-                <infinity-pagination class="grid-list" @nextPage="onNextPage">
-                    <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="productData.id">
-                        <product-card :product-data="productData" class="product-card_grow"/>
+            <div class="catalog__container" v-else>
+                <div class="catalog__header">
+                    <div class="catalog__filter">
+                        <div class="catalog__filter-title title-h1">Rent&nbsp;</div>
+                        <app-filter class="catalog__filter-select" @filterChange="onFilterChange">
+                            <base-select name="type" :options="productTypes" class="title-h1"/>
+                        </app-filter>
                     </div>
-                </infinity-pagination>
+                    <div class="catalog__actions">
+                        <!-- TODO: add product -->
+                    </div>
+                </div>
+                <div class="catalog__body">
+                    <infinity-pagination class="grid-list" @nextPage="onNextPage">
+                        <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="productData.id">
+                            <product-card :product-data="productData" class="product-card_grow"/>
+                        </div>
+                    </infinity-pagination>
+                </div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -126,6 +129,10 @@
 </script>
 
 <style lang="scss">
+    .catalog-wrapper {
+        display: flex;
+        flex: 1;
+    }
     .catalog {
         padding: 56px 64px;
         border-radius: 48px;
