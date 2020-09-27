@@ -8,7 +8,12 @@
         ref="button"
     >
         <span class="button__content">
-            <slot>{{ normalizedSettings.title }}</slot>
+            <span class="button__text" v-if="$slots.default">
+                <slot>{{ normalizedSettings.title }}</slot>
+            </span>
+            <span class="button__icon" v-if="icon">
+                 <base-icon :name="icon" class="button__icon-figure"/>
+            </span>
         </span>
         <span class="button-pulsy" v-show="isActivated" v-if="normalizedSettings.isPulse" ref="pulsy">
             <span class="button-pulsy__target" ref="pulsyTarget"></span>
@@ -22,7 +27,12 @@
 </template>
 
 <script>
+    import BaseIcon from '@/components/BaseIcon.vue';
+
     export default {
+        components: {
+            BaseIcon,
+        },
         props: {
             settings: {
                 type: Object
@@ -35,6 +45,9 @@
                 type: Boolean,
                 default: false
             },
+            icon: {
+                type: String
+            }
         },
         data() {
             return {
@@ -103,10 +116,15 @@
             transition: $transition-main;
         }
         &__content {
-            //
+            display: flex;
+            align-items: center;
         }
         &__content.is-invisible {
             opacity: 0;
+        }
+        &__icon {
+            margin-left: 8px;
+            transition: $transition-main;
         }
         &__progress {
             position: absolute;
@@ -154,6 +172,53 @@
         }
     }
 
+    .button_full {
+        width: 100%;
+    }
+
+    .button_icon {
+        color: $color-blue-500;
+        background-color: transparent;
+        padding: 0;
+        box-shadow: none;
+        &::before {
+            display: none;
+        }
+        .button__text {
+            margin-right: 20px;
+        }
+        .button__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 48px;
+            width: 48px;
+            height: 48px;
+            fill: $color-white-800;
+            background-color: $color-blue-500;
+            border-radius: 16px;
+            &-figure {
+                transition: $transition-long;
+            }
+        }
+    }
+    .button_icon:hover {
+        background-color: transparent;
+        box-shadow: none;
+        color: lighten($color-blue-500, 5%);
+        .button__icon {
+            background-color: lighten($color-blue-500, 5%);
+            box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .button_icon.button_white {
+        color: $color-white-800;
+        .button__icon {
+            fill: $color-blue-500;
+            background-color: $color-white-800;
+        }
+    }
 
     .button-pulsy {
         position: absolute;

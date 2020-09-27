@@ -1,5 +1,10 @@
 <template>
-    <svg class="svg-icon" :viewbox="viewBox" preserveAspectRatio="none" :width="size.width" :height="size.height">
+    <div v-if="isResponsive" class="svg-container" :style="{paddingTop: `${ (size.height / size.width) * 100}%`}">
+        <svg class="svg-icon" :viewbox="viewBox" preserveAspectRatio="none">
+            <use :xlink:href="url"></use>
+        </svg>
+    </div>
+    <svg v-else class="svg-icon" :viewbox="viewBox" preserveAspectRatio="none" :width="size.width" :height="size.height">
         <use :xlink:href="url"></use>
     </svg>
 </template>
@@ -18,6 +23,9 @@
             height: {
                 type: String
             },
+            isResponsive: {
+                type: Boolean,
+            }
         },
         data() {
             return {
@@ -54,6 +62,15 @@
 </script>
 
 <style lang="scss">
+    .svg-container {
+        position: relative;
+        display: inline-flex;
+        & > .svg-icon {
+            position: absolute;
+            @include trbl(0);
+            display: inline-block;
+        }
+    }
     .svg-icon {
         display: block;
     }

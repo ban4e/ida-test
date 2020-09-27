@@ -15,20 +15,47 @@
                         </app-filter>
                     </div>
                     <div class="catalog__actions">
-                        <!-- TODO: add product -->
+                        <base-button icon="plus" class="button_icon" @click.native.prevent="openNewProductModal">Add new</base-button>
                     </div>
                 </div>
                 <div class="catalog__body">
-                    <infinity-pagination class="grid-list" @nextPage="onNextPage">
-                        <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="productData.id">
-                            <product-card :product-data="productData" class="product-card_grow"/>
-                        </div>
+                    <infinity-pagination @nextPage="onNextPage">
+                        <transition-group class="grid-list" name="list" tag="div">
+                            <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="productData.id">
+                                <product-card :product-data="productData" class="product-card_grow"/>
+                            </div>
+                        </transition-group>
                     </infinity-pagination>
                 </div>
             </div>
         </div>
+        <simple-modal :isOpened="isAddModalOpened">
+            <template v-slot:header>
+                <h1>Add new vehicle</h1>
+            </template>
+            <template v-slot:body>
+                <drop-area class="-mb_xxtiny"></drop-area>
+                <base-input class="-mb_xtiny"
+                    :settings="{
+                        label: 'Name'
+                    }"
+                />
+                <base-input class="-mb_xtiny"
+                    :settings="{
+                        label: 'Description'
+                    }"
+                />
+                <base-input class="-mb_xsmall"
+                    :settings="{
+                        label: 'Rent price'
+                    }"
+                >
+                    <slot v-slot:append>$/h</slot>
+                </base-input>
+                <base-button class="button_full">Complete</base-button>
+            </template>
+        </simple-modal>
     </div>
-
 </template>
 
 <script>
@@ -39,12 +66,19 @@
     import AppFilter from '@/components/AppFilter.vue';
     import InfinityPagination from '@/components/InfinityPagination.vue';
 
+    import SimpleModal from '@/components/SimpleModal.vue';
+    import DropArea from '@/components/DropArea.vue';
+    import BaseInput from '@/components/BaseInput.vue';
+
     export default {
         components: {
             BaseButton,
             ProductCard,
             BaseSelect,
-            InfinityPagination
+            InfinityPagination,
+            SimpleModal,
+            DropArea,
+            BaseInput,
         },
         name: 'AppCatalog',
         data() {
@@ -53,6 +87,7 @@
                 page: 1,
                 limit: 12,
                 activeFilters: {},
+                isAddModalOpened: false,
             }
         },
         computed: {
@@ -117,6 +152,10 @@
                     filters: this.activeFilters,
                     page: this.page
                 });
+            },
+            /** Открытие модального окна добавления нового продукта */
+            openNewProductModal() {
+                this.isAddModalOpened = true;
             }
         },
         created() {
@@ -129,6 +168,13 @@
 </script>
 
 <style lang="scss">
+    .list-enter-active, .list-leave-active {
+        transition: .65s ease;
+    }
+    .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(200px);
+    }
     .catalog-wrapper {
         display: flex;
         flex: 1;
@@ -162,6 +208,9 @@
             &-title, &-select {
                 flex: 0 0 auto;
             }
+        }
+        &__actions {
+            margin-left: auto;
         }
         &__body {
             //

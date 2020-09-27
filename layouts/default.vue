@@ -1,7 +1,7 @@
 <template>
     <div class="body__wrapper">
         <div class="body__header">
-            <app-header class="-mb_small"/>
+            <app-header class="-mb_small -mb_xs_mini"/>
         </div>
         <div class="body__container">
             <nuxt/>

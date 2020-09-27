@@ -31,6 +31,7 @@ $color-danger: $color-red-500;
 $color-success: $color-green-400;
 
 //transitions
+$transition-long: .65s cubic-bezier(.16,.16,.40,.82);
 $transition-main: .3s cubic-bezier(.16,.16,.40,.82);
 $transition-fast: .18s cubic-bezier(.16,.16,.40,.82);
 

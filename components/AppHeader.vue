@@ -2,7 +2,7 @@
     <div class="header grid-block">
         <div class="header__container grid-container">
             <a href="javascript:void(0)" class="header__logo">
-                <base-icon name="logo" class="header__logo-icon"/>
+                <base-icon name="logo" class="header__logo-icon" :is-responsive="true"/>
             </a>
             <div class="header__note">World's first affordable airsharing</div>
             <mod-switcher class="header__switcher"/>
@@ -46,18 +46,27 @@
         @include media-breakpoint-down(sm) {
             padding-top: 12px;
         }
+        @include media-breakpoint-down(xs) {
+            padding-bottom: 12px;
+        }
         &__container {
             display: flex;
             align-items: center;
         }
         &__logo {
             flex: 0 0 auto;
+            display: flex;
+            align-items: center;
             margin-right: 65px;
             @include media-breakpoint-down(md) {
                 margin-right: 32px;
             }
             &-icon {
+                width: 170px;
                 fill: var(--color-caption);
+                @include media-breakpoint-down(xs) {
+                    width: 114px;
+                }
             }
         }
         &__note {
@@ -83,7 +92,12 @@
                 margin-right: 24px;
             }
             &-item {
-                margin-right: 26px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                margin-right: 24px;
                 @include media-breakpoint-down(sm) {
                     margin-right: 16px;
                 }
