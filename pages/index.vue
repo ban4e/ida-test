@@ -8,6 +8,9 @@
     export default {
         components: {
             AppCatalog
-        }
+        },
+        mounted() {
+            this.$modalize.open('NewProduct');
+        },
     }
 </script>

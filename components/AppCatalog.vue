@@ -4,7 +4,13 @@
             <div class="catalog__error" v-if="isFetchError">
                 <div class="catalog__error-title title-h1 -mb_xxtiny">An error has occurred</div>
                 <div class="catalog__error-description -mb_xsmall">Please refresh the page</div>
-                <base-button @click.native.prevent="reloadData" ref="reloadButton">Reload page</base-button>
+                <base-button
+                    :isLoading="isProductRequest"
+                    @click.native.prevent="reloadData"
+                    ref="reloadButton"
+                >
+                    Reload page
+                </base-button>
             </div>
             <div class="catalog__container" v-else>
                 <div class="catalog__header">
@@ -29,32 +35,7 @@
                 </div>
             </div>
         </div>
-        <simple-modal :isOpened="isAddModalOpened">
-            <template v-slot:header>
-                <h1>Add new vehicle</h1>
-            </template>
-            <template v-slot:body>
-                <drop-area class="-mb_xxtiny"></drop-area>
-                <base-input class="-mb_xtiny"
-                    :settings="{
-                        label: 'Name'
-                    }"
-                />
-                <base-input class="-mb_xtiny"
-                    :settings="{
-                        label: 'Description'
-                    }"
-                />
-                <base-input class="-mb_xsmall"
-                    :settings="{
-                        label: 'Rent price'
-                    }"
-                >
-                    <slot v-slot:append>$/h</slot>
-                </base-input>
-                <base-button class="button_full">Complete</base-button>
-            </template>
-        </simple-modal>
+        <add-product :isOpened="isAddModalOpened"/>
     </div>
 </template>
 
@@ -66,30 +47,32 @@
     import AppFilter from '@/components/AppFilter.vue';
     import InfinityPagination from '@/components/InfinityPagination.vue';
 
-    import SimpleModal from '@/components/SimpleModal.vue';
-    import DropArea from '@/components/DropArea.vue';
-    import BaseInput from '@/components/BaseInput.vue';
+    import AddProduct from '@/components/modal/AddProduct.vue';
 
     export default {
+        async fetch() {
+            try {
+                await this.fetchProducts();
+            } catch(err) {
+                //
+            }
+        },
         components: {
             BaseButton,
             ProductCard,
             BaseSelect,
             InfinityPagination,
-            SimpleModal,
-            DropArea,
-            BaseInput,
+            AddProduct
         },
         name: 'AppCatalog',
-        data() {
-            return {
-                errorMessage: '',
-                page: 1,
-                limit: 12,
-                activeFilters: {},
-                isAddModalOpened: false,
-            }
-        },
+        data: () => ({
+            errorMessage: '',
+            page: 1,
+            limit: 12,
+            activeFilters: {},
+            isAddModalOpened: false,
+            isProductRequest: false,
+        }),
         computed: {
             isFetchError() {
                 return Boolean(this.errorMessage);
@@ -100,10 +83,9 @@
             productTypes() {
                 const types = this.$store.getters.getTypes;
                 return [
-                    {title: 'whatever', value: ''},
-                    ...types.map(productType =>
-                        { return {title: productType, value: productType} }
-                    )];
+                    { title: 'whatever', value: ' '},
+                    ...types.map(productType => { return {title: productType, value: productType} })
+                ];
             }
         },
         methods: {
@@ -111,10 +93,9 @@
                 changeProductsToDisplay: 'paginateFilteredProducts'
             }),
             reloadData(e) {
-                this.$refs.reloadButton.$el.classList.add('is-loading');
-                const fetchResult = this.fetchProducts();
-                fetchResult.finally(() => {
-                    this.$refs.reloadButton.$el.classList.remove('is-loading');
+                this.isProductRequest = true;
+                this.fetchProducts().finally(() => {
+                    this.isProductRequest = false;
                 }).then(() => {
                     this.errorMessage = '';
 //                    console.log('resolved');
@@ -158,12 +139,9 @@
                 this.isAddModalOpened = true;
             }
         },
-        created() {
-            this.fetchProducts();
-        },
-        mounted() {
-            //
-        }
+        // created() {
+        //     this.fetchProducts();
+        // },
     }
 </script>
 

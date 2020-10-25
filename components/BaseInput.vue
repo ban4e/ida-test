@@ -1,5 +1,5 @@
 <template>
-    <div class="field" :class="[normalizedSettings.classes, {'is-error': errorInfo.isError}, typeClasses, stateClasses]" v-bind="normalizedSettings.fieldAttrs" ref="field">
+    <div class="field" :class="[normalizedSettings.classes, {'is-error': errorMessage}, typeClasses, stateClasses]" v-bind="normalizedSettings.fieldAttrs" ref="field">
         <div class="field__container">
             <fieldset v-if="normalizedSettings.type === this.types.TYPE_OUTLINED" class="field__fieldset">
                 <legend class="field__legend" ref="legend"></legend>
@@ -18,20 +18,23 @@
                     @blur="onBlur"
                     @input="onInput"
                     ref="input"
+                    v-on="inputListeners"
                 >
                 <label v-if="!placeholder && normalizedSettings.label" class="field__label" ref="label">
                     {{ normalizedSettings.label }}
                 </label>
-                <slot name="append"></slot>
+                <div class="field__append" v-if="$slots.append">
+                    <slot name="append"></slot>
+                </div>
             </div>
         </div>
-        <!--v-if="errorInfo.isError"-->
-        <div class="field__error" ref="error" v-if="errorInfo.isError">
-            <div class="field__error-figure">
-                <base-icon width="4" height="16" name="warning" class="field__error-icon"/>
+        <transition name="jello">
+            <div class="field__error" ref="error" v-if="errorMessage">
+                <div class="field__error-figure">
+                    <base-icon width="4" height="16" name="warning" class="field__error-icon"/>
+                </div>
             </div>
-            <!--<div class="field__error-message">{{ errorInfo.message }}</div>-->
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -46,29 +49,21 @@
             BaseIcon,
         },
         props: {
-            settings: {type: Object},
-            validation: {type: Object}, // regex
-            value: {type: String, default: ''},
-            type: {type: String, default: 'text'},
-            name: {type: String, default: ''},
-            placeholder: {type: String, default: ''},
-            required: {type: Boolean, default: false},
-            disabled: {type: Boolean, default: false},
-            readonly: {type: Boolean, default: false}
+            settings: { type: Object },
+            validation: { type: Object }, // regex
+            value: { type: String, default: '' },
+            type: { type: String, default: 'text' },
+            name: { type: String, default: '' },
+            placeholder: { type: String, default: '' },
+            required: { type: Boolean, default: false },
+            disabled: { type: Boolean, default: false },
+            readonly: { type: Boolean, default: false },
+            inputListeners: { type: Object, default: () => ({}) },
+            error: { type: [String, Boolean] },
         },
         data() {
             return {
                 labelScale: 0.7,
-                constraints: {
-                    'required': {
-                        pattern: /^\S+$/,
-                        message: 'Заполните это поле',
-                    },
-                    'email': {
-                        pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                        message: 'Это не похоже на email'
-                    }
-                },
                 localValue: this.value,
                 isFill: Boolean(this.localValue),
                 isFocus: false,
@@ -77,7 +72,7 @@
                     TYPE_FILLED: 'filled',
                     TYPE_OUTLINED: 'outlined',
                     TYPE_LIGHT: 'light'
-                }
+                },
             }
         },
         computed: {
@@ -88,28 +83,7 @@
                     attrs: {},
                     fieldAttrs: {},
                     classes: '',
-
                 }, this.settings);
-            },
-            /**
-             * Проверка значения на соответсвие регулярному выражению.
-             * Сравнение происходит по атрибуту `name` или по входящему prop`у validation
-             * @returns {Object}
-             */
-            errorInfo() {
-                let isError = false;
-                let message = '';
-
-                if (this.required && Object.keys(this.constraints).includes('required') && this.isActivated) {
-                    isError = !this.constraints['required'].pattern.test(this.localValue);
-                    message = isError ? this.constraints['required'].message : '';
-                }
-                else if (this.name && Object.keys(this.constraints).includes(this.name) && this.isActivated) {
-                    isError = !this.constraints[this.name].pattern.test(this.localValue);
-                    message = isError ? this.constraints[this.name].message : '';
-                }
-
-                return {isError, message};
             },
             stateClasses() {
                 return {
@@ -123,7 +97,15 @@
                     'field_outlined': this.normalizedSettings.type === this.types.TYPE_OUTLINED,
                     'field_light': this.normalizedSettings.type === this.types.TYPE_LIGHT,
                 }
-            }
+            },
+            errorMessage: {
+                get() {
+                    return this.error;
+                },
+                set(value) {
+                    this.$emit('errorReset');
+                }
+            },
         },
         methods: {
             onFocus(e) {
@@ -137,7 +119,6 @@
 
                 this.isFocus = true;
                 if (!this.isFill) {
-                    console.log('top', labelTop, 'height', labelRect.height);
                     if (legendElem) legendElem.style.width = `${labelElem.offsetWidth * this.labelScale}px`;
                     labelElem.style.transform = `
                         translateY(${translateY}px)
@@ -160,15 +141,28 @@
                 this.localValue = e.target.value;
                 this.localValue !== '' ? this.isFill = true : this.isFill = false;
                 this.$emit('input', this.localValue);
+                if (this.errorMessage) {
+                    this.errorMessage = '';
+                }
+            }
+        },
+        watch: {
+            error(newValue, oldValue) {
+                if (newValue) {
+                    this.$nextTick(() => {
+                        tippy(this.$refs.error, {
+                            content: newValue,
+                            theme: 'error',
+                            arrow: tippy.roundArrow,
+                            // showOnCreate: true,
+                            delay: [150, 0],
+                        });
+                    });
+                }
             }
         },
         mounted() {
-            console.log(tippy);
-            tippy(this.$refs.error, {
-                content: 'Заполните это поле',
-                theme: 'error',
-                arrow: tippy.roundArrow,
-            });
+            console.log(this.$listeners);
         }
     }
 </script>
@@ -181,6 +175,7 @@
             display: flex;
             align-items: center;
             min-height: 48px;
+            max-height: 56px;
             padding: 0 48px 0 24px;
             border-radius: 12px;
             background-color: $color-gray-100;
@@ -202,6 +197,9 @@
             transition: width $transition-main, padding $transition-main;
         }
         &__entry {
+            @include rhythm(16px, 16px);
+            display: flex;
+            align-items: center;
             position: relative;
             padding: 21px 0;
             flex: 1;
@@ -224,7 +222,6 @@
             position: relative;
             display: block;
             width: 100%;
-            @include rhythm(16px, 16px);
             padding: 0;
             border: none;
             border-radius: inherit;
@@ -233,6 +230,13 @@
             outline: none;
             resize: none;
             z-index: 1;
+            &:-webkit-autofill, &-internal-autofill-selected {
+                background-color: transparent !important;
+                -webkit-box-shadow: 0 0 0 20px $color-gray-100 inset !important;
+            }
+        }
+        &__append {
+            margin-left: 8px;
         }
         &__details {
             position: absolute;
@@ -243,14 +247,13 @@
             font-size: 11px;
         }
         &__error {
-            //display: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: absolute;
-            top: 50%;
+            top: 0;
+            bottom: 0;
             right: 16px;
-            transform: translate(0, -50%);
-            //font-size: 14px;
-            //opacity: 0;
-            //margin-top: 3px;
             &-figure {
                 display: flex;
                 align-items: center;
@@ -268,6 +271,7 @@
             color: $color-danger;
         }
     }
+    // Состояние фокуса
     .field.is-focus {
         .field__fieldset {
             border-color: darken($color-gray-100, 10%);
@@ -277,6 +281,7 @@
             padding-right: 5px;
         }
     }
+    // Состояние заполненного поля
     .field.is-fill {
         .field__fieldset {
             border-color: darken($color-gray-100, 10%);
@@ -286,16 +291,12 @@
             padding-right: 5px;
         }
     }
+    // Состояние с ошибкой
     .field.is-error {
         .field__fieldset {
             border-color: $color-danger;
         }
-        .field__error {
-            display: block;
-            opacity: 1;
-        }
     }
-
 
     .field_filled.is-fill, .field_filled.is-focus  {
         .field__label {
@@ -348,6 +349,38 @@
         .field__input {
             @include rhythm(14, 20);
             font-weight: 300;
+        }
+    }
+
+    .jello-enter-active {
+        animation: jello-horizontal .75s;
+    }
+
+    .jello-leave-active {
+        animation: jello-horizontal .75s reverse;
+    }
+
+    @keyframes jello-horizontal {
+        0% {
+            transform: scale3d(1, 1, 1);
+        }
+        30% {
+            transform: scale3d(1.125, 0.875, 1);
+        }
+        40% {
+            transform: scale3d(0.875, 1.125, 1);
+        }
+        50% {
+            transform: scale3d(1.08, 0.96, 1);
+        }
+        65% {
+            transform: scale3d(0.98, 1.02, 1);
+        }
+        75% {
+            transform: scale3d(1.02, 0.98, 1);
+        }
+        100% {
+            transform: scale3d(1, 1, 1);
         }
     }
 

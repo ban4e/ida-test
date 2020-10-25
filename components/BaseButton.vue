@@ -1,6 +1,7 @@
 <template>
     <component :is="isLink ? 'a' : 'button'"
-        class="button" :class="normalizedSettings.classes"
+        class="button"
+        :class="[normalizedSettings.classes, {'is-loading': isLoading}]"
         :type="type"
         :disabled="disabled"
         v-bind="normalizedSettings.attrs"
@@ -15,10 +16,17 @@
                  <base-icon :name="icon" class="button__icon-figure"/>
             </span>
         </span>
-        <span class="button-pulsy" v-show="isActivated" v-if="normalizedSettings.isPulse" ref="pulsy">
-            <span class="button-pulsy__target" ref="pulsyTarget"></span>
+        <span class="button-pulsy" v-show="normalizedSettings.isPulse" ref="pulsy">
+            <transition
+                name="pulsy"
+                @before-enter="pulsyBeforeEnter"
+                @after-enter="pulsyAfterEnter"
+            >
+                <span class="button-pulsy__target" ref="pulsyTarget" v-if="isPulsyActivated"></span>
+            </transition>
         </span>
-        <span class="button__progress" role="progressbar">
+
+        <span class="button__progress" role="progressbar" v-if="isLoading">
             <svg class="button__progress-icon" viewBox="22 22 44 44">
                 <circle class="button__progress-circle" cx="44" cy="44" r="20.2" fill="none" stroke-width="3.6"></circle>
             </svg>
@@ -47,13 +55,16 @@
             },
             icon: {
                 type: String
+            },
+            isLoading: {
+                type: Boolean
             }
         },
-        data() {
-            return {
-                isActivated: false,
-            }
-        },
+        data: () => ({
+            isPulsyActivated: false,
+            clickY: null,
+            clickX: null,
+        }),
         computed: {
             normalizedSettings() {
                 return Object.assign({
@@ -68,22 +79,39 @@
         },
         methods: {
             onClick(e) {
-                this.isActivated = true;
+                if (this.normalizedSettings.isPulse && !this.isPulsyActivated) {
+                    this.isPulsyActivated = true;
+                    this.clickY = e.clientY;
+                    this.clickX = e.clientX;
+                }
 
+
+                // const buttonElem = this.$refs.button;
+                // const pulsyElem = this.$refs.pulsy;
+                // const pulsyTarget = this.$refs.pulsyTarget;
+                // const buttonRect = buttonElem.getBoundingClientRect();
+                // const sideWidth = Math.max(buttonRect.width, buttonRect.height);
+
+                // pulsyTarget.style.width = pulsyTarget.style.height = `${sideWidth}px`;
+                // pulsyTarget.style.top = `${e.clientY - buttonRect.top - sideWidth/2}px`;
+                // pulsyTarget.style.left = `${e.clientX - buttonRect.left - sideWidth/2}px`;
+
+                // pulsyElem.classList.add('is-show');
+                // pulsyTarget.addEventListener('animationend', () => {
+                //     pulsyElem.classList.remove('is-show');
+                // });
+            },
+            pulsyBeforeEnter(el) {
                 const buttonElem = this.$refs.button;
-                const pulsyElem = this.$refs.pulsy;
-                const pulsyTarget = this.$refs.pulsyTarget;
                 const buttonRect = buttonElem.getBoundingClientRect();
-                const sideWidth = Math.max(buttonRect.width, buttonRect.height);
+                const sideWidth = Math.max(buttonElem.offsetWidth, buttonElem.offsetHeight);
 
-                pulsyTarget.style.width = pulsyTarget.style.height = `${sideWidth}px`;
-                pulsyTarget.style.top = `${e.clientY - buttonRect.top - sideWidth/2}px`;
-                pulsyTarget.style.left = `${e.clientX - buttonRect.left - sideWidth/2}px`;
-
-                pulsyElem.classList.add('is-show');
-                pulsyTarget.addEventListener('animationend', () => {
-                    pulsyElem.classList.remove('is-show');
-                });
+                el.style.width = el.style.height = `${sideWidth}px`;
+                el.style.top = `${this.clickY - buttonRect.top - sideWidth/2}px`;
+                el.style.left = `${this.clickX - buttonRect.left - sideWidth/2}px`;
+            },
+            pulsyAfterEnter(el) {
+                this.isPulsyActivated = false;
             },
         }
     }
@@ -136,7 +164,6 @@
             animation: rotate-360 1.4s linear infinite;
             width: 20px;
             height: 20px;
-            display: none;
         }
         &__progress-icon {
             display: block;
@@ -164,11 +191,9 @@
         }
     }
     .button.is-loading {
+        pointer-events: none;
         .button__content {
             opacity: 0;
-        }
-        .button__progress {
-            display: block;
         }
     }
 
@@ -241,10 +266,13 @@
             will-change: transform;
         }
     }
-    .button-pulsy.is-show .button__target {
+
+    .pulsy-enter-active {
         animation: pulsy 0.75s ease-out;
     }
-
+    .pulsy-leave-active {
+        animation: none;
+    }
     @keyframes pulsy {
         from {
             transform: scale(0);
