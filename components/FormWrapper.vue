@@ -39,6 +39,7 @@
             onSubmit(e) {
                 this.isSubmiting = true;
                 this.validate();
+
                 setTimeout(() => {
                     this.isSubmiting = false;
                 }, 3000);

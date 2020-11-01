@@ -21,7 +21,7 @@
                         </app-filter>
                     </div>
                     <div class="catalog__actions">
-                        <base-button icon="plus" class="button_icon" @click.native.prevent="openNewProductModal">Add new</base-button>
+                        <base-button icon="plus" class="button_icon" @click.native.prevent="$modalize.open('NewProduct')">Add new</base-button>
                     </div>
                 </div>
                 <div class="catalog__body">
@@ -35,7 +35,6 @@
                 </div>
             </div>
         </div>
-        <add-product :isOpened="isAddModalOpened"/>
     </div>
 </template>
 
@@ -46,8 +45,6 @@
     import BaseSelect from '@/components/BaseSelect.vue';
     import AppFilter from '@/components/AppFilter.vue';
     import InfinityPagination from '@/components/InfinityPagination.vue';
-
-    import AddProduct from '@/components/modal/AddProduct.vue';
 
     export default {
         async fetch() {
@@ -61,8 +58,7 @@
             BaseButton,
             ProductCard,
             BaseSelect,
-            InfinityPagination,
-            AddProduct
+            InfinityPagination
         },
         name: 'AppCatalog',
         data: () => ({
@@ -70,7 +66,6 @@
             page: 1,
             limit: 12,
             activeFilters: {},
-            isAddModalOpened: false,
             isProductRequest: false,
         }),
         computed: {
@@ -83,7 +78,7 @@
             productTypes() {
                 const types = this.$store.getters.getTypes;
                 return [
-                    { title: 'whatever', value: ' '},
+                    { title: 'whatever', value: ''},
                     ...types.map(productType => { return {title: productType, value: productType} })
                 ];
             }
@@ -133,10 +128,6 @@
                     filters: this.activeFilters,
                     page: this.page
                 });
-            },
-            /** Открытие модального окна добавления нового продукта */
-            openNewProductModal() {
-                this.isAddModalOpened = true;
             }
         },
         // created() {

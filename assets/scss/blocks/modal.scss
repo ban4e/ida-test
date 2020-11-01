@@ -1,0 +1,20 @@
+.modals-container {
+    position: fixed;
+    @include trbl(0);
+    overflow: hidden;
+    pointer-events: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: none;
+    &.is-active {
+        pointer-events: auto;
+        z-index: 1200;
+        display: block;
+    }
+}
+.modal-backdrop {
+    position: fixed;
+    @include trbl(0);
+    display: block;
+    background-color: rgba($color-dark-blue, .32);
+}

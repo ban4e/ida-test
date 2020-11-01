@@ -1,7 +1,7 @@
 <template>
-    <base-modal>
+    <base-modal modalClasses="_side">
         <template v-slot:header>
-            <h1>Add new vehicle</h1>
+            <h1 class="-mb_xsmall">Add new vehicle</h1>
         </template>
         <template v-slot:body>
             <form-wrapper :schema="schema" @validationDone="onValidationDone">
@@ -55,7 +55,7 @@
     import BaseInput from '@/components/BaseInput.vue';
 
     export default {
-        name: 'AddProduct',
+        name: 'NewProduct',
         components: {
             BaseModal,
             DropArea,

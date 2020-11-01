@@ -4,6 +4,7 @@
         flex-direction: column;
         min-height: 100vh;
         overflow: hidden;
+        transition: $transition-main;
     }
     &__header {
         flex: 0 0 auto;
@@ -18,4 +19,7 @@
 
 .body.is-overlay {
     overflow: hidden;
+    .body__wrapper {
+        filter: blur(10px);
+    }
 }

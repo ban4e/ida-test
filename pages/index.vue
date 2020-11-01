@@ -10,7 +10,13 @@
             AppCatalog
         },
         mounted() {
-            this.$modalize.open('NewProduct');
+            // setTimeout(() => {
+            //     this.$modalize.open('NewProduct');
+            // }, 3000);
+
+            // setTimeout(() => {
+            //     this.$modalize.close();
+            // }, 8000);
         },
     }
 </script>
