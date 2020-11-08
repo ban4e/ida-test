@@ -3,7 +3,17 @@
     --color-secondary: #F3F4F7;
     --color-caption: #012345;
     --color-text: #677B8F;
+    --color-sub: #FCFCFC;
 }
+
+:root[palette="dark"] {
+    --color-primary: #012345;
+    --color-secondary: #011C37;
+    --color-caption: #FCFCFC;
+    --color-text: #99A7B5;
+    --color-sub: #012345;
+}
+
 
 .-text-center {
     text-align: center;

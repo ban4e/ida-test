@@ -1,12 +1,12 @@
 <template>
     <div class="selector">
         <select class="selector__select" v-bind="$attrs">
-            <option class="selector__option" v-for="optionData in options" :value="optionData.value">
+            <option class="selector__option" v-for="(optionData, i) in options" :value="optionData.value" :key="i">
                 {{ optionData.title }}
             </option>
         </select>
         <div class="selector__indicator-wrapper">
-            <base-icon name="angle-down" class="selector__indicator"/>
+            <base-icon name="angle-down" class="selector__indicator" :is-box="true"/>
         </div>
     </div>
 </template>
@@ -55,13 +55,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex: 0 0 24px;
-            width: 24px;
-            height: 24px;
+            flex: 0 0 auto;
             margin-left: 12px;
+            @include media-breakpoint-down(sm) {
+                margin-left: 4px;
+            }
         }
         &__indicator {
             fill: currentColor;
+            width: 24px;
+            @include media-breakpoint-down(sm) {
+                width: 16px;
+            }
         }
     }
     select::-ms-expand.selector {

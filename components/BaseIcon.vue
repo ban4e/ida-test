@@ -4,6 +4,14 @@
             <use :xlink:href="url"></use>
         </svg>
     </div>
+    <div v-else-if="isBox" class="svg-box">
+        <div class="svg-container" :style="{maxWidth: `${size.width}px`}">
+            <div class="svg-container__height" :style="{paddingTop: `${ (size.height / size.width) * 100}%`}"></div>
+            <svg class="svg-icon" :viewbox="viewBox" preserveAspectRatio="none" :width="size.width" :height="size.height">
+                <use :xlink:href="url"></use>
+            </svg>
+        </div>
+    </div>
     <svg v-else class="svg-icon" :viewbox="viewBox" preserveAspectRatio="none" :width="size.width" :height="size.height">
         <use :xlink:href="url"></use>
     </svg>
@@ -25,6 +33,11 @@
             },
             isResponsive: {
                 type: Boolean,
+                default: false
+            },
+            isBox: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -69,9 +82,24 @@
             position: absolute;
             @include trbl(0);
             display: inline-block;
+            max-width: 100%;
+            max-height: 100%;
         }
     }
     .svg-icon {
         display: block;
+    }
+    .svg-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        &::before {
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+        .svg-container {
+            width: 100%;
+        }
     }
 </style>

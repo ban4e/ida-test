@@ -13,7 +13,7 @@
                 <slot>{{ normalizedSettings.title }}</slot>
             </span>
             <span class="button__icon" v-if="icon">
-                 <base-icon :name="icon" class="button__icon-figure"/>
+                 <base-icon :name="icon" class="button__icon-figure" :is-box="true"/>
             </span>
         </span>
         <span class="button-pulsy" v-show="normalizedSettings.isPulse" ref="pulsy">
@@ -151,7 +151,7 @@
             opacity: 0;
         }
         &__icon {
-            margin-left: 8px;
+            // margin-left: 8px;
             transition: $transition-main;
         }
         &__progress {
@@ -211,6 +211,9 @@
         }
         .button__text {
             margin-right: 20px;
+            @include media-breakpoint-down(sm) {
+                margin-right: 12px;
+            }
         }
         .button__icon {
             display: flex;
@@ -222,8 +225,18 @@
             fill: $color-white-800;
             background-color: $color-blue-500;
             border-radius: 16px;
+            @include media-breakpoint-down(sm) {
+                flex: 0 0 32px;
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
             &-figure {
+                width: 24px;
                 transition: $transition-long;
+                @include media-breakpoint-down(sm) {
+                     width: 20px;
+                }
             }
         }
     }

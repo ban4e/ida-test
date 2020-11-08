@@ -33,7 +33,7 @@
     .product-card {
         position: relative;
         padding: 24px 32px 25px;
-        background-color: $color-white-800;
+        background-color: var(--color-sub);
         border-radius: 32px;
         transition: $transition-main;
         @include media-breakpoint-down(lg) {

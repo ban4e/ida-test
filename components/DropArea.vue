@@ -8,7 +8,13 @@
                :style="{ backgroundImage: preview ? `url('${preview}')` : null }"
                ref="droparea"
         >
-            <input class="drop-area__input" type="file" @change="onChange" ref="inputFile">
+            <input
+                class="drop-area__input"
+                type="file"
+                @change="onChange"
+                :name="name"
+                ref="inputFile"
+            >
             <transition name="fade">
                 <base-button
                     v-if="!preview"
@@ -24,7 +30,7 @@
                     key="removeBtn"
                 />
             </transition>
-            <span class="drop-area__loader -hidden" ref="loader">
+            <span v-if="isFileLoading" class="drop-area__loader" ref="loader">
                 <svg class="drop-area__loader-icon" viewBox="0 0 80 80" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                     <circle :r="circleRadius" :cx="circleSide" :cy="circleSide" fill="transparent" stroke="white" :stroke-width="circleStrokeWidth - 1" class="drop-area__loader-circle"></circle>
                     <circle :r="circleRadius" :cx="circleSide" :cy="circleSide" fill="transparent" stroke="blue" :stroke-width="circleStrokeWidth" :stroke-dasharray="strokeDasharray" :stroke-dashoffset="circleOffset" class="drop-area__loader-circle"></circle>
@@ -44,6 +50,10 @@
             BaseIcon,
             BaseButton
         },
+        props: {
+            value: {},
+            name: { type: String, default: '' },
+        },
         data() {
             return {
                 circleSide: 40,
@@ -51,9 +61,18 @@
                 circleOffset: 0,
                 file: null,
                 preview: null,
+                isFileLoading: false,
             }
         },
         computed: {
+            localValue: {
+                get() {
+                    return this.value;
+                },
+                set(newValue) {
+                    this.$emit('input', newValue);
+                }
+            },
             circleRadius() {
                 return this.circleSide - this.circleStrokeWidth;
             },
@@ -80,12 +99,11 @@
                 this.handleFiles(files);
             },
             onChange(e) {
-                console.log(e);
                 const filesList = e.target && e.target.files;
                 if (filesList && filesList.length) {
+                    this.localValue = filesList[0];
                     this.handleFiles(e.target.files);
                 }
-
             },
 
             /**
@@ -96,8 +114,6 @@
                 this.file = filesArr[0];
                 const fileSize = this.file.size;
                 const isFileLarge = fileSize > 100 * 1024 * 1024; // размер файла более 100 мб
-
-                console.log(this.file);
 
                 // ToDO: вынести прелоадер в компонент
                 const reader = new FileReader();
@@ -122,17 +138,16 @@
             removeFile() {
                 this.file = null;
                 this.preview = null;
+                this.localValue = '';
                 this.$refs.inputFile.value = '';
             },
-
             showProgress() {
-                this.$refs.loader.classList.remove('-hidden');
+                this.isFileLoading = true;
             },
             hideProgress() {
-                this.$refs.loader.classList.add('-hidden');
+                this.isFileLoading = false;
             },
             updateProgress(e) {
-                console.log(e.lengthComputable);
                 if (e.lengthComputable) {
                     const percentLoaded = Math.round((e.loaded / e.total) * 100);
                     if (percentLoaded < 100) {
@@ -160,7 +175,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: $color-gray-100;
+            background: center center/cover no-repeat;
+            background-color: var(--color-secondary);
             border-radius: 24px;
             cursor: pointer;
             transition: $transition-main;

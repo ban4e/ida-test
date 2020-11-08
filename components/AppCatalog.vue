@@ -26,8 +26,15 @@
                 </div>
                 <div class="catalog__body">
                     <infinity-pagination @nextPage="onNextPage">
-                        <transition-group class="grid-list" name="list" tag="div">
-                            <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="productData.id">
+                        <transition-group
+                            class="catalog__list grid-list"
+                            name="list"
+                            tag="div"
+                            mode="out-in"
+                            appear
+                            @before-leave="beforeLeave"
+                        >
+                            <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="Object.keys(activeFilters).length ? `${productData.id}-${activeFilters.type}` : productData.id" :data-id="productData.id">
                                 <product-card :product-data="productData" class="product-card_grow"/>
                             </div>
                         </transition-group>
@@ -39,7 +46,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
     import BaseButton from '@/components/BaseButton.vue';
     import ProductCard from '@/components/ProductCard.vue';
     import BaseSelect from '@/components/BaseSelect.vue';
@@ -66,17 +73,21 @@
             page: 1,
             limit: 12,
             activeFilters: {},
-            isProductRequest: false,
+            isProductRequest: false
         }),
         computed: {
+            ...mapGetters({
+                filteredProducts: 'filterProducts',
+                getTypes: 'getTypes'
+            }),
             isFetchError() {
                 return Boolean(this.errorMessage);
             },
             products() {
-                return this.$store.getters.getProductsToDisplay;
+                return this.filteredProducts({ filters: this.activeFilters, page: this.page });
             },
             productTypes() {
-                const types = this.$store.getters.getTypes;
+                const types = this.getTypes;
                 return [
                     { title: 'whatever', value: ''},
                     ...types.map(productType => { return {title: productType, value: productType} })
@@ -84,9 +95,9 @@
             }
         },
         methods: {
-            ...mapActions({
-                changeProductsToDisplay: 'paginateFilteredProducts'
-            }),
+            // ...mapActions({
+            //     changeProductsToDisplay: 'paginateFilteredProducts'
+            // }),
             reloadData(e) {
                 this.isProductRequest = true;
                 this.fetchProducts().finally(() => {
@@ -102,10 +113,6 @@
                 try {
                     const products = await this.$store.dispatch('fetchProducts');
                     this.$store.commit('updateProducts', products);
-                    this.changeProductsToDisplay({
-                        filters: this.activeFilters,
-                        page: this.page
-                    });
                     return Promise.resolve();
                 } catch (err) {
                     this.errorMessage = err.error;
@@ -116,20 +123,33 @@
             onFilterChange(payload) {
                 this.page = 1;
                 this.activeFilters = Object.assign({}, this.activeFilters, payload.filterData);
-                this.changeProductsToDisplay({
-                    filters: this.activeFilters,
-                    page: this.page
-                });
             },
             /** Загрузка новой страницы */
             onNextPage() {
                 this.page++;
-                this.changeProductsToDisplay({
-                    filters: this.activeFilters,
-                    page: this.page
+            },
+
+            beforeLeave(el) {
+                // const {left, top, width, height} = el.getBoundingClientRect();
+                const top = el.offsetTop;
+                const left = el.offsetLeft;
+                const width = el.offsetWidth;
+                const height = el.offsetHeight;
+                this.$nextTick(() => {
+                    el.style.position = 'absolute';
+                    el.style.left = `${ left }px`;
+                    el.style.top = `${ top }px`;
+                    el.style.width = `${ width }px`;
+                    el.style.height = `${ height }px`;
                 });
+                // el.style.position = 'absolute';
+                // el.style.width = width;
+                // el.style.height = height;
             }
         },
+        // mounted() {
+        //     console.log('appCatalog.this', this);
+        // },
         // created() {
         //     this.fetchProducts();
         // },
@@ -138,11 +158,21 @@
 
 <style lang="scss">
     .list-enter-active, .list-leave-active {
-        transition: .65s ease;
+        transition: opacity $transition-long, transform $transition-long;
     }
     .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
         opacity: 0;
+        // transform: translateY(200px);
+    }
+    .list-enter {
         transform: translateY(200px);
+    }
+    .list-leave-active {
+        // position: absolute;
+        transition: opacity $transition-long;
+    }
+    .list-move {
+        transition: transform $transition-long;
     }
     .catalog-wrapper {
         display: flex;
@@ -180,6 +210,9 @@
         }
         &__actions {
             margin-left: auto;
+        }
+        &__list {
+            position: relative;
         }
         &__body {
             //

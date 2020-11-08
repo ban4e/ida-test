@@ -65,8 +65,8 @@ html {
     font-feature-settings: 'liga';
     font-family: $font-main;
     font-size: $root-font-size;
-    color: $color-text;
-
+    color: var(--color-text);
+    background-color: var(--color-primary);
 }
 
 @media (pointer: fine) { // scrollbar issue

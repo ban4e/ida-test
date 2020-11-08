@@ -1,17 +1,17 @@
 <template>
-    <div class="field" :class="[normalizedSettings.classes, {'is-error': errorMessage}, typeClasses, stateClasses]" v-bind="normalizedSettings.fieldAttrs" ref="field">
+    <div class="field" :class="[normalizedSettings.classes, fieldTypeClasses, stateClasses, {'is-error': error}]" v-bind="normalizedSettings.fieldAttrs" ref="field">
         <div class="field__container">
-            <fieldset v-if="normalizedSettings.type === this.types.TYPE_OUTLINED" class="field__fieldset">
-                <legend class="field__legend" ref="legend"></legend>
+            <fieldset v-if="normalizedSettings.fieldType === this.fieldTypes.TYPE_OUTLINED" class="field__fieldset">
+                <legend class="field__legend" :style="legendStyles" ref="legend"></legend>
             </fieldset>
             <div class="field__entry">
                 <input
+                    v-model="localValue"
                     :type="type"
                     :name="name"
                     :placeholder="placeholder"
                     :required="required"
                     :disabled="disabled"
-                    :value="localValue"
                     v-bind="normalizedSettings.attrs"
                     class="field__input"
                     @focus="onFocus"
@@ -20,7 +20,7 @@
                     ref="input"
                     v-on="inputListeners"
                 >
-                <label v-if="!placeholder && normalizedSettings.label" class="field__label" ref="label">
+                <label v-if="!placeholder && normalizedSettings.label" class="field__label" :style="labelStyles" ref="label">
                     {{ normalizedSettings.label }}
                 </label>
                 <div class="field__append" v-if="$slots.append">
@@ -29,7 +29,7 @@
             </div>
         </div>
         <transition name="jello">
-            <div class="field__error" ref="error" v-if="errorMessage">
+            <div class="field__error" ref="error" v-if="error">
                 <div class="field__error-figure">
                     <base-icon width="4" height="16" name="warning" class="field__error-icon"/>
                 </div>
@@ -64,11 +64,11 @@
         data() {
             return {
                 labelScale: 0.7,
-                localValue: this.value,
-                isFill: Boolean(this.localValue),
-                isFocus: false,
+                // isFill: Boolean(this.localValue),
                 isActivated: Boolean(this.localValue),
-                types: {
+                labelTranslateY: false,
+                isFocus: false,
+                fieldTypes: {
                     TYPE_FILLED: 'filled',
                     TYPE_OUTLINED: 'outlined',
                     TYPE_LIGHT: 'light'
@@ -76,10 +76,21 @@
             }
         },
         computed: {
+            localValue: {
+                get() {
+                    return this.value;
+                },
+                set(newValue) {
+                    this.$emit('input', newValue)
+                }
+            },
+            isFill() {
+                return Boolean(this.localValue);
+            },
             normalizedSettings() {
                 return Object.assign({
                     label: 'текстовое поле',
-                    type: this.types.TYPE_FILLED, // 'filled'|'outlined'|'light'
+                    fieldType: this.fieldTypes.TYPE_FILLED, // 'filled'|'outlined'|'light'
                     attrs: {},
                     fieldAttrs: {},
                     classes: '',
@@ -91,59 +102,51 @@
                     'is-focus': this.isFocus,
                 }
             },
-            typeClasses() {
+            fieldTypeClasses() {
                 return {
-                    'field_filled': this.normalizedSettings.type === this.types.TYPE_FILLED,
-                    'field_outlined': this.normalizedSettings.type === this.types.TYPE_OUTLINED,
-                    'field_light': this.normalizedSettings.type === this.types.TYPE_LIGHT,
+                    'field_filled': this.normalizedSettings.fieldType === this.fieldTypes.TYPE_FILLED,
+                    'field_outlined': this.normalizedSettings.fieldType === this.fieldTypes.TYPE_OUTLINED,
+                    'field_light': this.normalizedSettings.fieldType === this.fieldTypes.TYPE_LIGHT,
                 }
             },
-            errorMessage: {
-                get() {
-                    return this.error;
-                },
-                set(value) {
-                    this.$emit('errorReset');
+            labelStyles() {
+                let styles = {};
+
+                if ((this.isFocus || this.isFill) && this.$refs.label) {
+                    styles = { 'transform': `translateY(${this.labelTranslateY}px) scale(${this.labelScale})` };
                 }
+
+                return styles;
             },
+            legendStyles() {
+                let styles = {};
+
+                if ((this.isFocus || this.isFill) && this.$refs.label && this.$refs.legend) {
+                    stlyes = { 'width': `${this.$refs.label.offsetWidth * this.labelScale}px` };
+                }
+
+                return styles;
+            }
         },
         methods: {
             onFocus(e) {
-                const labelElem = this.$refs.label;
-                const legendElem = this.$refs.legend;
-                const labelRect = labelElem.getBoundingClientRect();
-                const labelTop = parseFloat(getComputedStyle(labelElem).getPropertyValue('top'));
-                const translateY = this.normalizedSettings.type === this.types.TYPE_FILLED
-                    ? ((labelTop / 2) + (labelRect.height * this.labelScale * 0.5)) * -1
-                    : (labelTop  + (labelRect.height * this.labelScale * 0.5)) * -1;
-
                 this.isFocus = true;
-                if (!this.isFill) {
-                    if (legendElem) legendElem.style.width = `${labelElem.offsetWidth * this.labelScale}px`;
-                    labelElem.style.transform = `
-                        translateY(${translateY}px)
-                        scale(${this.labelScale})
-                    `;
-                }
             },
             onBlur(e) {
-                const labelElem = this.$refs.label;
-                const legendElem = this.$refs.legend;
-
                 this.isFocus = false;
-                if (!this.isFill) {
-                    if (legendElem) legendElem.style.width = '';
-                    labelElem.style.transform = '';
-                }
             },
             onInput(e) {
                 this.isActivated = true;
-                this.localValue = e.target.value;
-                this.localValue !== '' ? this.isFill = true : this.isFill = false;
-                this.$emit('input', this.localValue);
-                if (this.errorMessage) {
-                    this.errorMessage = '';
-                }
+            },
+            calcLabelTranslate() {
+                const labelElem = this.$refs.label;
+                const labelRect = labelElem.getBoundingClientRect();
+                const labelTop = parseFloat(getComputedStyle(labelElem).getPropertyValue('top'));
+                const translateY = this.normalizedSettings.fieldType === this.fieldTypes.TYPE_FILLED
+                    ? ((labelTop / 2) + (labelRect.height * this.labelScale * 0.5)) * -1
+                    : (labelTop  + (labelRect.height * this.labelScale * 0.5)) * -1;
+
+                return translateY;
             }
         },
         watch: {
@@ -162,6 +165,9 @@
             }
         },
         mounted() {
+            this.$nextTick(() => { // browser paint
+                this.labelTranslateY = this.calcLabelTranslate();
+            });
             console.log(this.$listeners);
         }
     }
@@ -178,7 +184,7 @@
             max-height: 56px;
             padding: 0 48px 0 24px;
             border-radius: 12px;
-            background-color: $color-gray-100;
+            background-color: var(--color-secondary);
         }
         &__fieldset {
             position: absolute;

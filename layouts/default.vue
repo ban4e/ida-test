@@ -16,6 +16,9 @@
 
     export default {
         head: {
+             htmlAttrs: {
+                palette: 'dark'
+            },
             bodyAttrs: {
                 class: 'body'
             }

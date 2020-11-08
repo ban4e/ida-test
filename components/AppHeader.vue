@@ -9,12 +9,12 @@
             <ul class="header__actions">
                 <li class="header__actions-item">
                     <a href="javascript:void(0)" class="header-action">
-                        <base-icon name="chat" class="header-action__icon"/>
+                        <base-icon name="chat" class="header-action__icon" :is-box="true"/>
                     </a>
                 </li>
                 <li class="header__actions-item">
                     <a href="javascript:void(0)" class="header-action is-alert">
-                        <base-icon name="bell" class="header-action__icon"/>
+                        <base-icon name="bell" class="header-action__icon header-action__icon_notification" :is-box="true"/>
                     </a>
                 </li>
             </ul>
@@ -95,8 +95,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 24px;
-                height: 24px;
+                // width: 24px;
+                // height: 24px;
                 margin-right: 24px;
                 @include media-breakpoint-down(sm) {
                     margin-right: 16px;
@@ -144,10 +144,20 @@
     }
 
     .header-action {
-        display: block;
+        display: inline-flex;
         &__icon {
             fill: $color-gray-500;
             transition: $transition-fast;
+            width: 24px;
+            @include media-breakpoint-down(sm) {
+                width: 20px;
+                padding: 1px;
+            }
+        }
+        &__icon_notification {
+            @include media-breakpoint-down(sm) {
+                padding: 1px 2.5px;
+            }
         }
     }
     .header-action:hover {
@@ -160,24 +170,26 @@
         &::after {
             content: '';
             position: absolute;
-            top: -1px;
-            right: 0;
+            top: 0.5px;
+            right: 2px;
             display: block;
             width: 4px;
             height: 4px;
             background-color: $color-rose-500;
             border-radius: 50%;
+            z-index: 1;
         }
         &::before {
             content: '';
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -3px;
+            right: -3px;
             display: block;
             width: 14px;
             height: 14px;
-            background-color: $color-white;
+            background-color: var(--color-primary);
             border-radius: 50%;
+            z-index: 1;
         }
     }
 </style>

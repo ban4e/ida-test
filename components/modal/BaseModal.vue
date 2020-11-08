@@ -1,27 +1,29 @@
 <!-- ToDo: проверить возможность обернуть в transition -->
 <template>
-    <div class="modal-layer" tabindex="-1">
-        <div class="modal" :class="modalClassesNormalized" ref="modal">
-            <template v-if="$slots.default">
-                <slot></slot>
-            </template>
-            <div v-else class="modal__container" ref="container">
-                <div v-if="$slots.header || title" class="modal__header">
-                    <slot name="header">
-                        <h3 v-if="title">{{ title }}</h3>
-                    </slot>
-                </div>
-                <div v-if="$slots.body || description" class="modal__body">
-                    <slot name="body">
-                        <div v-if="description">{{ description }}</div>
-                    </slot>
-                </div>
-                <div v-if="$slots.footer" class="modal__footer">
-                    <slot name="footer"/>
+    <transition :name="transitionName" appear>
+        <div v-if="isShow" class="modal-layer" tabindex="-1" ref="layer">
+            <div class="modal" :class="modalClassesNormalized" ref="modal">
+                <template v-if="$slots.default">
+                    <slot></slot>
+                </template>
+                <div v-else class="modal__container" ref="container">
+                    <div v-if="$slots.header || title" class="modal__header">
+                        <slot name="header">
+                            <h3 v-if="title">{{ title }}</h3>
+                        </slot>
+                    </div>
+                    <div v-if="$slots.body || description" class="modal__body">
+                        <slot name="body">
+                            <div v-if="description">{{ description }}</div>
+                        </slot>
+                    </div>
+                    <div v-if="$slots.footer" class="modal__footer">
+                        <slot name="footer"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -38,6 +40,14 @@ export default {
         },
         modalClasses: {
             type: [String, Array, Object]
+        },
+        transitionName: {
+            type: String,
+            default: 'modal'
+        },
+        isShow: { // Пока используется только для применения transition. ToDo: Найти способ менять значение в случае если является дочерним компонентом (не дублируя пропы для родителя)
+            type: Boolean,
+            default: true
         }
     },
     computed: {
@@ -46,7 +56,7 @@ export default {
         }
     },
     mounted() {
-        this.$el.focus();
+        this.$refs.layer.focus();
     }
 }
 </script>
@@ -79,7 +89,7 @@ export default {
             display: flex;
             flex-direction: column;
             flex: 1 0 auto;
-            background: $color-white;
+            background-color: var(--color-sub);
             border-radius: 10px;
             padding-top: 64px;
             padding-bottom: 64px;

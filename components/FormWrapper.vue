@@ -38,11 +38,9 @@
         methods: {
             onSubmit(e) {
                 this.isSubmiting = true;
-                this.validate();
-
-                setTimeout(() => {
-                    this.isSubmiting = false;
-                }, 3000);
+                const validationErrors = this.validate();
+                if (!validationErrors.length) this.$emit('validationPass');
+                this.isSubmiting = false;
             },
             onInputChange(inputName) {
                 console.log('changed', inputName)
@@ -52,12 +50,18 @@
             },
             validate() {
                 const elems = this.getFormElements();
+                const errors = [];
                 elems.forEach(elem => {
                     const fieldError = this.validateField({ elem });
                     if (this.formSchema.hasOwnProperty(elem.name)) {
-                        this.formSchema[elem.name] = Object.assign( {}, this.formSchema[elem.name], {validation: fieldError} );
+                        this.formSchema[elem.name] = Object.assign({}, this.formSchema[elem.name], {validation: fieldError});
+                        if (fieldError) {
+                            errors.push({ [elem.name]: fieldError });
+                        }
                     }
                 });
+
+                return errors;
             },
             validateField({ elem }) {
                 const elemName = elem.name;

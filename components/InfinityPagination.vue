@@ -9,11 +9,17 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        name: 'pagination',
+        name: 'InfinityPagination',
+        props: {
+            loading: {
+                type: Boolean,
+                default: false
+            }
+        },
         computed: {
-            ...mapGetters({
-                isLoading: 'getIsLoading',
-            })
+            isLoading() {
+                return this.loading;
+            }
         },
         data() {
             return {
@@ -29,7 +35,6 @@
         methods: {
             thresholdReached() {
                 this.$emit('nextPage');
-//                this.observer.unobserve(this.threshold);
             }
         },
         watch: {
