@@ -1,6 +1,6 @@
 <template>
     <div class="product-card">
-        <a href="#" class="product-card__link"></a>
+        <nuxt-link :to="{name: 'id', params: { id: productData.id }}" class="product-card__link"></nuxt-link>
         <div class="product-card__container">
             <div class="product-card__image" :style="{backgroundImage: `url('${productData.image}')`}"></div>
             <div class="product-card__info">
@@ -35,7 +35,7 @@
         padding: 24px 32px 25px;
         background-color: var(--color-sub);
         border-radius: 32px;
-        transition: $transition-main;
+        transition: box-shadow $transition-main;
         @include media-breakpoint-down(lg) {
             padding: 20px;
         }

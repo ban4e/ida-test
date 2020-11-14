@@ -1,9 +1,9 @@
 <template>
     <div class="header grid-block">
         <div class="header__container grid-container">
-            <a href="javascript:void(0)" class="header__logo">
+            <nuxt-link to="/" class="header__logo">
                 <base-icon name="logo" class="header__logo-icon" :is-responsive="true"/>
-            </a>
+            </nuxt-link>
             <div class="header__note">World's first affordable airsharing</div>
             <mod-switcher class="header__switcher"/>
             <ul class="header__actions">

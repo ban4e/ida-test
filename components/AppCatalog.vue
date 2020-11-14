@@ -31,7 +31,6 @@
                             name="list"
                             tag="div"
                             mode="out-in"
-                            appear
                             @before-leave="beforeLeave"
                         >
                             <div class="grid-item grid-item_flex grid-item_4x grid-item_md_6x grid-item_sm_12x -mb_small -mb_sm_tiny" v-for="productData in products" :key="Object.keys(activeFilters).length ? `${productData.id}-${activeFilters.type}` : productData.id" :data-id="productData.id">
@@ -56,7 +55,7 @@
     export default {
         async fetch() {
             try {
-                await this.fetchProducts();
+                const data = await this.fetchProducts();
             } catch(err) {
                 //
             }
@@ -95,29 +94,30 @@
             }
         },
         methods: {
-            // ...mapActions({
-            //     changeProductsToDisplay: 'paginateFilteredProducts'
-            // }),
-            reloadData(e) {
+            ...mapActions({
+                loadProducts: 'fetchProducts'
+            }),
+            async reloadData(e) {
+                if (this.isProductRequest) return;
+
                 this.isProductRequest = true;
-                this.fetchProducts().finally(() => {
-                    this.isProductRequest = false;
-                }).then(() => {
+
+                try {
+                    await this.fetchProducts();
                     this.errorMessage = '';
-//                    console.log('resolved');
-                }).catch(() => {
-//                    console.log('rejected');
-                })
+                } catch(err) {
+                    //console.log(err);
+                } finally {
+                    this.isProductRequest = false;
+                }
             },
             async fetchProducts() {
-                try {
-                    const products = await this.$store.dispatch('fetchProducts');
-                    this.$store.commit('updateProducts', products);
-                    return Promise.resolve();
-                } catch (err) {
-                    this.errorMessage = err.error;
-                    return Promise.reject();
-                }
+                return new Promise((res, rej) => {
+                    return this.loadProducts().then(() => res()).catch((err) => {
+                        this.errorMessage = err.error;
+                        rej(err);
+                    });
+                });
             },
             /** Изменения в фильтре */
             onFilterChange(payload) {
@@ -130,7 +130,6 @@
             },
 
             beforeLeave(el) {
-                // const {left, top, width, height} = el.getBoundingClientRect();
                 const top = el.offsetTop;
                 const left = el.offsetLeft;
                 const width = el.offsetWidth;
@@ -142,9 +141,6 @@
                     el.style.width = `${ width }px`;
                     el.style.height = `${ height }px`;
                 });
-                // el.style.position = 'absolute';
-                // el.style.width = width;
-                // el.style.height = height;
             }
         },
         // mounted() {
@@ -169,7 +165,7 @@
     }
     .list-leave-active {
         // position: absolute;
-        transition: opacity $transition-long;
+        transition: opacity $transition-main;
     }
     .list-move {
         transition: transform $transition-long;

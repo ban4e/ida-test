@@ -7,11 +7,9 @@
 <script>
     export default {
         name: 'AppFilter',
-        data() {
-            return {
-                filterInputs: [],
-            }
-        },
+        data: () => ({
+            filterInputs: [],
+        }),
         methods: {
             getInputs() {
                 this.filterInputs = [...this.$refs.filter.querySelectorAll('input, select, textarea')];

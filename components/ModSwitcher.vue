@@ -1,7 +1,7 @@
 <template>
     <label class="mod-switcher">
         <input type="checkbox" class="mod-switcher__input" @change="changeMode">
-        <base-icon :name="modeDictionary[mode].icon" class="mod-switcher__icon" :is-box="true"/>
+        <base-icon :name="modeDictionary[mode].icon" class="mod-switcher__icon" :key="modeDictionary[mode].icon" :is-box="true"/>
         <div class="mod-switcher__title">{{ modeDictionary[mode].title }}</div>
     </label>
 </template>

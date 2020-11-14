@@ -1,8 +1,20 @@
-h1, .title-h1 {
-    @include rhythm(40px, 48px);
+@mixin title {
     font-weight: 700;
     color: var(--color-caption);
+}
+
+h1, .title-h1 {
+    @include title;
+    @include rhythm(40px, 48px);
     @include media-breakpoint-down(sm) {
         @include rhythm(24px, 29px);
+    }
+}
+
+h3, .title-h3 {
+    @include title;
+    @include rhythm(24px, 28px);
+    @include media-breakpoint-down(sm) {
+        @include rhythm(20px, 28px);
     }
 }
