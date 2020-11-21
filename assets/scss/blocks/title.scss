@@ -3,6 +3,10 @@
     color: var(--color-caption);
 }
 
+.title {
+    @include title;
+}
+
 h1, .title-h1 {
     @include title;
     @include rhythm(40px, 48px);

@@ -17,9 +17,10 @@ export default {
      ** See https://nuxtjs.org/api/configuration-head
      */
     head: {
-        title: process.env.npm_package_name || '',
+        title: 'Тестовое задание',
         meta: [
             {charset: 'utf-8'},
+            {title: 'Тестовое задание'},
             {name: 'viewport', content: 'width=device-width, initial-scale=1'},
             {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
         ],
@@ -45,6 +46,7 @@ export default {
      */
     plugins: [
         { src: '@/plugins/modalize.js', mode: 'client' },
+        { src: '@/plugins/lazyload.js', mode: 'client' },
     ],
     /*
      ** Auto import components
@@ -62,12 +64,35 @@ export default {
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/style-resources',
+        '@nuxtjs/universal-storage',
     ],
     /*
      ** Axios module configuration
      ** See https://axios.nuxtjs.org/options
      */
     axios: {},
+
+    router: {
+        linkActiveClass: 'is-active-link',
+        linkExactActiveClass: 'is-exactly-active-link',
+    },
+
+    storage: {
+        vuex: {
+            namespace: 'storage'
+        },
+        cookie: {
+            prefix: '',
+            options: {
+                path: '/'
+            }
+        },
+        localStorage: {
+            prefix: ''
+        },
+        ignoreExceptions: false,
+    },
+
     /*
      ** Build configuration
      ** See https://nuxtjs.org/api/configuration-build/
@@ -76,6 +101,13 @@ export default {
      ** Build configuration
      */
     build: {
+        loaders: {
+            scss: {
+                sassOptions: {
+                    precision: 9
+                }
+            }
+        },
         extend (config, ctx) {
             // Excludes /assets/svg from url-loader
             const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
@@ -106,7 +138,7 @@ export default {
                         id: 'svgSprite',
                     },
                 }),
-            )
+            );
         }
     },
 }

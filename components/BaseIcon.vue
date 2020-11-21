@@ -42,7 +42,7 @@
         },
         data() {
             return {
-                icon: null
+                icon: require(`@/assets/svg/${this.name}.svg`).default
             }
         },
         computed: {
@@ -67,9 +67,6 @@
                 }
                 return {width: resultWidth, height: resultHeight}
             },
-        },
-        created() {
-            this.icon = require(`@/assets/svg/${this.name}.svg`).default;
         }
     }
 </script>

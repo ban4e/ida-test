@@ -41,10 +41,14 @@
             background-color: transparent;
             outline: none;
             width: auto;
+            padding-right: 36px;
             color: currentColor;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            @include media-breakpoint-down(sm) {
+                padding-right: 20px;
+            }
         }
         &__option {
             @include rhythm(16, 20);
@@ -52,14 +56,15 @@
             padding: 3px 7px;
         }
         &__indicator-wrapper {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(0, -50%);
             display: flex;
             align-items: center;
             justify-content: center;
             flex: 0 0 auto;
-            margin-left: 12px;
-            @include media-breakpoint-down(sm) {
-                margin-left: 4px;
-            }
+            pointer-events: none;
         }
         &__indicator {
             fill: currentColor;

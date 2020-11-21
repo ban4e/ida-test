@@ -1,17 +1,29 @@
+@import '~/assets/scss/common/animations.scss';
+
 :root {
-    --color-primary: #FFFFFF;
-    --color-secondary: #F3F4F7;
-    --color-caption: #012345;
-    --color-text: #677B8F;
-    --color-sub: #FCFCFC;
+    @include defineColorHSL('--color-primary', hue($color-white), saturation($color-white), lightness($color-white));
+    @include defineColorHSL('--color-secondary', hue($color-gray-100), saturation($color-gray-100), lightness($color-gray-100));
+    @include defineColorHSL('--color-caption', hue($color-deep-blue-900), saturation($color-deep-blue-900), lightness($color-deep-blue-900));
+    @include defineColorHSL('--color-text', hue($color-gray-700), saturation($color-gray-700), lightness($color-gray-700));
+    @include defineColorHSL('--color-sub', hue($color-white-800), saturation($color-white-800), lightness($color-white-800));
+    // --color-primary: #FFFFFF;
+    // --color-secondary: #F3F4F7;
+    // --color-caption: #012345;
+    // --color-text: #677B8F;
+    // --color-sub: #FCFCFC;
 }
 
-:root[palette="dark"] {
-    --color-primary: #012345;
-    --color-secondary: #011C37;
-    --color-caption: #FCFCFC;
-    --color-text: #99A7B5;
-    --color-sub: #012345;
+:root[theme="dark"] {
+    @include defineColorHSL('--color-primary', hue($color-deep-blue-900), saturation($color-deep-blue-900), lightness($color-deep-blue-900));
+    @include defineColorHSL('--color-secondary', hue($color-deep-blue), saturation($color-deep-blue), lightness($color-deep-blue));
+    @include defineColorHSL('--color-caption', hue($color-white-800), saturation($color-white-800), lightness($color-white-800));
+    @include defineColorHSL('--color-text', hue($color-gray-500), saturation($color-gray-500), lightness($color-gray-500));
+    @include defineColorHSL('--color-sub', hue($color-deep-blue-900), saturation($color-deep-blue-900), lightness($color-deep-blue-900));
+    // --color-primary: #012345;
+    // --color-secondary: #011C37;
+    // --color-caption: #FCFCFC;
+    // --color-text: #99A7B5;
+    // --color-sub: #012345;
 }
 
 
@@ -19,8 +31,26 @@
     text-align: center;
 }
 
+.-rose {
+    color: $color-rose-400;
+}
+
 .-hidden {
     display: none !important;
+}
+
+.-skeleton:not(.-loaded) {
+    position: relative;
+    overflow: hidden;
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        @include trbl(0);
+        background-image: linear-gradient(to right, transparent 0%, transparent 15%, var(--color-primary) 50%, transparent 85%);
+        background-size: 100%;
+        animation: shine 1s $transition-main infinite;
+    }
 }
 
 @each $name, $size in $media-sizes {

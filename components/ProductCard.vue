@@ -2,7 +2,7 @@
     <div class="product-card">
         <nuxt-link :to="{name: 'id', params: { id: productData.id }}" class="product-card__link"></nuxt-link>
         <div class="product-card__container">
-            <div class="product-card__image" :style="{backgroundImage: `url('${productData.image}')`}"></div>
+            <div v-lazyload.background :data-src="productData.preview" class="product-card__image -skeleton"></div>
             <div class="product-card__info">
                 <div class="product-card__title">{{ productData.name }}</div>
                 <div class="product-card__description">{{ productData.description }}</div>
@@ -52,19 +52,20 @@
             position: relative;
             flex: 0 0 88px;
             width: 88px;
-            background: $color-gray-100 center center/cover no-repeat;
+            background: var(--color-secondary) center center/cover no-repeat;
             border-radius: 24px;
             margin-right: 24px;
             @include media-breakpoint-down(lg) {
                 margin-right: 20px;
             }
-            &::before {
+            &::after {
                 content: '';
                 display: block;
                 padding-top: 100%;
             }
         }
         &__info {
+            flex: 1 1 auto;
             padding-top: 16px;
             @include media-breakpoint-down(lg) {
                 padding-top: 12px;

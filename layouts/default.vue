@@ -12,19 +12,27 @@
 </template>
 
 <script>
-    import AppHeader from '@/components/AppHeader.vue';
+import AppHeader from '@/components/AppHeader.vue';
 
-    export default {
-        head: {
-             htmlAttrs: {
-                palette: 'dark'
+export default {
+    fetch() {
+        this.mode = this.$storage.getUniversal('theme') || 'light';
+    },
+    data: () => ({
+        mode: 'light'
+    }),
+    head() {
+        return {
+            htmlAttrs: {
+                theme: this.mode
             },
             bodyAttrs: {
                 class: 'body'
             }
-        },
-        components: {
-            AppHeader,
         }
+    },
+    components: {
+        AppHeader,
     }
+}
 </script>

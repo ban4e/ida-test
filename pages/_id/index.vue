@@ -1,8 +1,13 @@
 <template>
     <div class="content">
-        <div class="-mb_small">{{ productData.specifications_text }}</div>
-        <div class="title-h3 -mb_small">Features:</div>
-        <advantage-card v-for="(advantage, i) in advantages" :key="i" :advantage="advantage" />
+        <div class="content-text -mb_small -mb_sm_xtiny">{{ productData.specifications_text }}</div>
+        <div class="title-h3 -mb_small -mb_sm_xtiny">Features:</div>
+        <advantage-card
+            v-for="(advantage, i) in advantages"
+            :key="i"
+            :advantage="advantage"
+            :class="{'-mb_xtiny -mb_sm_tiny': i !== advantages.length - 1}"
+        />
     </div>
 </template>
 
@@ -22,12 +27,12 @@ export default {
     data: () => ({
         advantages: [
             {
-                icon: '',
+                icon: 'trophy',
                 title: 'A challenge for a true champion',
                 description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.'
             },
             {
-                icon: '',
+                icon: 'pilot',
                 title: 'Pilot\'s sweaty hands',
                 description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.'
             }
