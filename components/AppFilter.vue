@@ -35,11 +35,11 @@
             },
             emitChanges() {
                 /** ToDO: не проверено на других типах инпутов. Возможно, потребуется другая логика получения данных */
-                const filterData = Object.fromEntries(
-                    this.filterInputs.map(inputItem => {
-                        return [inputItem.name, inputItem.value]
-                    })
-                );
+                const filterData = {};
+                this.filterInputs.forEach(inputItem => {
+                    filterData[inputItem.name] = inputItem.value;
+                });
+
                 this.$emit('filterChange', { filterData });
             }
         },

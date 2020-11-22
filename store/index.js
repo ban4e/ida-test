@@ -89,21 +89,6 @@ const store = () =>
             },
             async findProduct({ getters, dispatch }, productID) {
                 return getters.getProduct(productID);
-                // const products = getters.getIsProductsFetched && getters.getProducts;
-                // console.log('products', products);
-                // try {
-                //     if (products && products.length) {
-                //         return getters.getProduct(productID);
-                //     } else if (!getters.getIsProductsFetched) {
-                //         await dispatch('fetchProducts');
-                //         console.log(getters.getProducts.length);
-                //         return dispatch('findProduct', productID);
-                //     } else {
-                //         return Promise.reject({ error: 'Can`t get product' });
-                //     }
-                // } catch (err) {
-                //     return Promise.reject(err);
-                // }
             }
         }
     });

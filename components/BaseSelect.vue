@@ -46,6 +46,9 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            &::-ms-expand {
+                display: none;
+            }
             @include media-breakpoint-down(sm) {
                 padding-right: 20px;
             }

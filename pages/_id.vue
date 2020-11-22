@@ -89,10 +89,8 @@ export default {
         async fetchProductsCycle() {
             try {
                 await this.fetchProducts();
-                console.log('fetch success');
                 return Promise.resolve();
             } catch (err) {
-                console.log('fetch error');
                 return this.fetchProductsCycle();
             }
         }

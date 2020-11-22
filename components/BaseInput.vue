@@ -122,7 +122,10 @@ export default {
         calcLabelTranslate() {
             const labelElem = this.$refs.label;
             const labelRect = labelElem.getBoundingClientRect();
-            const labelTop = parseFloat(getComputedStyle(labelElem).getPropertyValue('top'));
+            const labelTop = labelElem.offsetTop;
+            //  parseFloat(getComputedStyle(labelElem).getPropertyValue('top'));
+
+            console.log(getComputedStyle(labelElem), labelTop, labelRect.height);
             const translateY = this.fieldType === this.fieldTypes.TYPE_FILLED
                 ? ((labelTop / 2) + (labelRect.height * this.labelScale * 0.5)) * -1
                 : (labelTop  + (labelRect.height * this.labelScale * 0.5)) * -1;
@@ -149,7 +152,6 @@ export default {
         this.$nextTick(() => { // browser paint
             this.labelTranslateY = this.calcLabelTranslate();
         });
-        console.log(this.$listeners);
     }
 }
 </script>

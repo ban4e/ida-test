@@ -1,12 +1,14 @@
 <template>
-    <div class="body__wrapper">
-        <div class="body__header">
-            <app-header class="-mb_xsmall -mb_xs_mini"/>
-        </div>
-        <div class="body__container">
-            <nuxt/>
-        </div>
-        <div class="body__footer">
+    <div class="body__wrapper-fallback">
+        <div class="body__wrapper">
+            <div class="body__header">
+                <app-header class="-mb_xsmall -mb_xs_mini"/>
+            </div>
+            <div class="body__container">
+                <nuxt/>
+            </div>
+            <div class="body__footer">
+            </div>
         </div>
     </div>
 </template>

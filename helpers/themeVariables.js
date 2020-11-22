@@ -1,0 +1,48 @@
+const themes = {
+    'light': {
+        '--color-primary': 'hsl(0, 0%, 100%)',
+        '--color-primary-h': '0',
+        '--color-primary-s': '0%',
+        '--color-primary-l': '100%',
+        '--color-secondary': 'hsl(225, 20%, 96.078431373%)',
+        '--color-secondary-h': '225',
+        '--color-secondary-s': '20%',
+        '--color-secondary-l': '96.078431373%',
+        '--color-caption': 'hsl(210, 97.142857143%, 13.725490196%)',
+        '--color-caption-h': '210',
+        '--color-caption-s': '97.142857143%',
+        '--color-caption-l': '13.725490196%',
+        '--color-text': 'hsl(210, 16.260162602%, 48.235294118%)',
+        '--color-text-h': '210',
+        '--color-text-s': '16.260162602%',
+        '--color-text-l': '48.235294118%',
+        '--color-sub': 'hsl(0, 0%, 98.823529412%)',
+        '--color-sub-h': '0',
+        '--color-sub-s': '0%',
+        '--color-sub-l': '98.823529412%'
+    },
+    'dark': {
+        '--color-primary': 'hsl(210, 97.142857143%, 13.725490196%)',
+        '--color-primary-h': '210',
+        '--color-primary-s': '97.142857143%',
+        '--color-primary-l': '13.725490196%',
+        '--color-secondary': 'hsl(210, 96.428571429%, 10.980392157%)',
+        '--color-secondary-h': '210',
+        '--color-secondary-s': '96.428571429%',
+        '--color-secondary-l': '10.980392157%',
+        '--color-caption': 'hsl(0, 0%, 98.823529412%)',
+        '--color-caption-h': '0',
+        '--color-caption-s': '0%',
+        '--color-caption-l': '98.823529412%',
+        '--color-text': 'hsl(210, 15.909090909%, 65.490196078%)',
+        '--color-text-h': '210',
+        '--color-text-s': '15.909090909%',
+        '--color-text-l': '65.490196078%',
+        '--color-sub': 'hsl(210, 97.142857143%, 13.725490196%)',
+        '--color-sub-h': '210',
+        '--color-sub-s': '97.142857143%',
+        '--color-sub-l': '13.725490196%',
+    }
+};
+
+export default themes

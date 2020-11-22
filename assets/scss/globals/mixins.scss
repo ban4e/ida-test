@@ -119,8 +119,9 @@
 }
 
 @mixin defineColorHSL($color, $hue, $saturation, $lightness) {
-    #{$color}: unquote("hsl(#{$hue}, #{$saturation}, #{$lightness})");
-    #{$color}-h: #{$hue};
+    $hueNormalized: str-replace(#{$hue}, 'deg');
+    #{$color}: unquote("hsl(#{$hueNormalized}, #{$saturation}, #{$lightness})");
+    #{$color}-h: #{$hueNormalized};
     #{$color}-s: #{$saturation};
     #{$color}-l: #{$lightness};
 }

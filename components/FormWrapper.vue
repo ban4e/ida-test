@@ -48,7 +48,6 @@ export default {
                 this.formSchema[inputName].validation = '';
                 this.$emit('validationDone', this.formSchema);
             }
-            console.log('changed', inputName);
         },
         getFormElements() {
             return [...this.$refs.form.elements].filter(elem => elem.tagName.toLowerCase() !== 'button');
@@ -90,11 +89,6 @@ export default {
 
             return error;
         },
-    },
-    watch: {
-        formSchema: (oldValue, newValue) => {
-            console.log(oldValue, newValue);
-        }
     },
     beforeMount() {
         this.formSchema = this.schema;

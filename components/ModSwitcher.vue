@@ -8,6 +8,9 @@
 
 <script>
 import BaseIcon from '@/components/BaseIcon.vue';
+import cssVars from 'css-vars-ponyfill';
+import detectIE from '~/helpers/detectIE.js';
+import themeVariables from '~/helpers/themeVariables.js';
 
 export default {
     fetch() {
@@ -30,6 +33,12 @@ export default {
             this.mode = selectMode;
             this.$storage.setUniversal('theme', selectMode);
             document.documentElement.setAttribute('theme', selectMode);
+            if (detectIE()) {
+                cssVars({
+                    watch: true,
+                    variables: themeVariables[selectMode]
+                });
+           }
         }
     }
 }

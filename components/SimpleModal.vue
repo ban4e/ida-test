@@ -40,7 +40,6 @@
         },
         watch: {
             isOpened: function(newValue, oldValue) {
-                console.log(newValue, oldValue);
                 this.toggleBodyFixedState(oldValue);
             }
         },

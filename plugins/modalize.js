@@ -45,7 +45,6 @@ function detectIncomingComponentOptions(component) {
             if (Object.keys(modalNamesNormalized).includes(component)) {
                 const componentConfig = modalComponents(modalNamesNormalized[component]);
                 const vueComponent = Vue.component(component, componentConfig.default || componentConfig);
-                console.log(Vue.options.components);
                 return vueComponent;
             }
             break;
@@ -87,9 +86,7 @@ Modalize.install = (Vue) => {
                  * @param {*} props
                  */
                 open(component, props = {}) {
-                    console.log(Vue.options.components);
                     const componentInstance = detectIncomingComponentOptions.call(Vue, component);
-                    console.log(componentInstance);
                     const modalName = (typeof component === 'string') ? component : `modal-${ new Date().getTime() }`;
 
                     this.modals.push({

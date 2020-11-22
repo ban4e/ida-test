@@ -3,7 +3,7 @@
         <template v-slot:header>
             <div class="grid-list grid-list_space-between grid-list_align-center -mb_xsmall -mb_lg_xxtiny">
                 <div class="grid-item">
-                    <h1 class="">Add new vehicle</h1>
+                    <div class="title-h1">Add new vehicle</div>
                 </div>
                 <div class="grid-item">
                     <base-button icon="cross" mod="_icon" theme="secondary" @click.native.prevent="$modalize.close()" />
@@ -78,27 +78,27 @@
                     name: 'name',
                     label: 'Name',
                     value: '',
-                    rules: [{ name:'required', message: 'Заполните это поле' }],
+                    rules: [{ name:'required', message: 'Field is required' }],
                     validation: '',
                 },
                 description: {
                     name: 'description',
                     label: 'Description',
                     value: '',
-                    rules: [{ name:'required', message: 'Заполните это поле' }],
+                    rules: [{ name:'required', message: 'Field is required' }],
                     validation: '',
                 },
                 rent: {
                     name: 'rent',
                     label: 'Rent price',
                     value: '',
-                    rules: [{ name:'required', message: 'Заполните это поле' }],
+                    rules: [{ name:'required', message: 'Field is required' }],
                     validation: '',
                 },
                 image: {
                     name: 'image',
                     value: '',
-                    rules: [{ name:'required', message: 'Загрузите картинку' }],
+                    rules: [{ name:'required', message: 'Please upload image' }],
                     validation: '',
                 }
             }

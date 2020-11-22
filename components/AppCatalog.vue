@@ -106,7 +106,10 @@
                     await this.fetchProducts();
                     this.errorMessage = '';
                 } catch(err) {
-                    //console.log(err);
+                    this.$modalize.alert({
+                        title: 'Something goes wrong...',
+                        description: 'Please try again'
+                    });
                 } finally {
                     this.isProductRequest = false;
                 }
@@ -142,13 +145,7 @@
                     el.style.height = `${ height }px`;
                 });
             }
-        },
-        // mounted() {
-        //     console.log('appCatalog.this', this);
-        // },
-        // created() {
-        //     this.fetchProducts();
-        // },
+        }
     }
 </script>
 
@@ -173,6 +170,7 @@
     .catalog-wrapper {
         display: flex;
         flex: 1;
+        height: 100%;
     }
     .catalog {
         padding: 56px 64px;

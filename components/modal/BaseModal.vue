@@ -9,7 +9,7 @@
                 <div v-else class="modal__container" ref="container">
                     <div v-if="$slots.header || title" class="modal__header">
                         <slot name="header">
-                            <h3 v-if="title">{{ title }}</h3>
+                            <div v-if="title" class="title-h3 -mb_xtiny">{{ title }}</div>
                         </slot>
                     </div>
                     <div v-if="$slots.body || description" class="modal__body">
@@ -144,7 +144,7 @@ export default {
     .modal_side {
         top: 0;
         right: 0;
-        min-height: 100%;
+        min-height: 100vh;
         left: auto;
         transform: none;
         max-width: 600px;

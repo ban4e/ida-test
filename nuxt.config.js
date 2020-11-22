@@ -47,6 +47,7 @@ export default {
     plugins: [
         { src: '@/plugins/modalize.js', mode: 'client' },
         { src: '@/plugins/lazyload.js', mode: 'client' },
+        { src: '@/plugins/ie-poly.js', mode: 'client' },
     ],
     /*
      ** Auto import components
