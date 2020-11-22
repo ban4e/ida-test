@@ -71,7 +71,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .svg-container {
         position: relative;
         display: inline-flex;

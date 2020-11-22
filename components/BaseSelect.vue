@@ -29,12 +29,13 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .selector {
         position: relative;
         display: inline-flex;
         align-items: center;
         color: $color-blue-500;
+        user-select: none;
         &__select {
             display: inline-flex;
             border: none;
@@ -46,6 +47,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            cursor: pointer;
             &::-ms-expand {
                 display: none;
             }

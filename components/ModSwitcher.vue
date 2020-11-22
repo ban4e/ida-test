@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mod-switcher {
     position: relative;
     display: flex;
@@ -67,6 +67,7 @@ export default {
     }
     &__title {
         pointer-events: none;
+        user-select: none;
         @include media-breakpoint-down(sm) {
             display: none;
         }

@@ -39,7 +39,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .header {
         padding-top: 48px;
         color: $color-gray-500;
@@ -116,6 +116,7 @@
                 font-weight: bold;
                 margin-right: 16px;
                 transition: $transition-fast;
+                user-select: none;
                 @include media-breakpoint-down(sm) {
                     display: none;
                 }

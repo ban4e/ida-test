@@ -112,7 +112,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .button {
     @include rhythm(16, 16);
     position: relative;
@@ -149,8 +149,10 @@ export default {
     &__content.is-invisible {
         opacity: 0;
     }
+    &__text {
+        user-select: none;
+    }
     &__icon {
-        // margin-left: 8px;
         transition: $transition-main;
     }
     &__progress {
@@ -200,14 +202,6 @@ export default {
     width: 100%;
 }
 
-// .button_icon.button_white {
-//     color: $color-white-800;
-//     .button__icon {
-//         fill: $color-blue-500;
-//         background-color: $color-white-800;
-//     }
-// }
-
 .button_theme_secondary {
     background-color: var(--color-secondary);
 }
@@ -238,6 +232,20 @@ export default {
     .button__icon {
         background-color: lightenHSL(var(--color-sub), .12);
         box-shadow: 0 6px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.button_theme_transparent.button_icon {
+    .button__icon {
+        fill: var(--color-caption);
+        background-color: transparent;
+    }
+}
+.button_theme_transparent.button_icon:hover {
+    .button__icon {
+        opacity: .6;
+        background-color: transparent;
+        box-shadow: none;
     }
 }
 

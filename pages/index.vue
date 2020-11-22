@@ -8,15 +8,6 @@
     export default {
         components: {
             AppCatalog
-        },
-        mounted() {
-            // setTimeout(() => {
-            //     this.$modalize.open('NewProduct');
-            // }, 3000);
-
-            // setTimeout(() => {
-            //     this.$modalize.close();
-            // }, 8000);
-        },
+        }
     }
 </script>

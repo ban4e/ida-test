@@ -36,8 +36,8 @@ export default {
     ],
     styleResources: {
         scss: [
-            '@/assets/scss/globals/variables.scss',
-            '@/assets/scss/globals/mixins.scss',
+            '~/assets/scss/globals/variables.scss',
+            '~/assets/scss/globals/mixins.scss',
         ]
     },
     /*
@@ -45,9 +45,10 @@ export default {
      ** https://nuxtjs.org/guide/plugins
      */
     plugins: [
-        { src: '@/plugins/modalize.js', mode: 'client' },
-        { src: '@/plugins/lazyload.js', mode: 'client' },
-        { src: '@/plugins/ie-poly.js', mode: 'client' },
+        { src: '~/plugins/modalize.js', mode: 'client' },
+        { src: '~/plugins/lazyload.js', mode: 'client' },
+        { src: '~/plugins/filters.js', mode: 'client' },
+        { src: '~/plugins/ie-poly.js', mode: 'client' },
     ],
     /*
      ** Auto import components
@@ -142,4 +143,7 @@ export default {
             );
         }
     },
+    server: {
+        host: '0.0.0.0'
+    }
 }

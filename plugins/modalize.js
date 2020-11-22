@@ -113,6 +113,7 @@ Modalize.install = (Vue) => {
                 alert(props) {
                     const alertProps = {
                         modalClasses: '_alert',
+                        isCloseButton: true,
                         ...props
                     };
                     const baseModal = detectIncomingComponentOptions('BaseModal');
@@ -219,7 +220,3 @@ Modalize.install = (Vue) => {
 };
 
 Vue.use(Modalize);
-
-// export default (ctx, inject) => {
-//     inject('modalize', Modalize.install(Vue));
-// }

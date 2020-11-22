@@ -123,9 +123,6 @@ export default {
             const labelElem = this.$refs.label;
             const labelRect = labelElem.getBoundingClientRect();
             const labelTop = labelElem.offsetTop;
-            //  parseFloat(getComputedStyle(labelElem).getPropertyValue('top'));
-
-            console.log(getComputedStyle(labelElem), labelTop, labelRect.height);
             const translateY = this.fieldType === this.fieldTypes.TYPE_FILLED
                 ? ((labelTop / 2) + (labelRect.height * this.labelScale * 0.5)) * -1
                 : (labelTop  + (labelRect.height * this.labelScale * 0.5)) * -1;
@@ -156,7 +153,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .field {
     position: relative;
     &__container {
@@ -224,6 +221,14 @@ export default {
             -webkit-box-shadow: 0 0 0 20px var(--color-secondary) inset !important;
             -webkit-text-fill-color: var(--color-text);
             caret-color: var(--color-text);
+        }
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        &[type=number] {
+            -moz-appearance: textfield;
         }
     }
     &__append {

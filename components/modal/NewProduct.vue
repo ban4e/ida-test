@@ -37,6 +37,7 @@
                     />
                     <base-input class="-mb_xsmall -mb_sm_xxtiny"
                         v-model="schema.rent.value"
+                        type="number"
                         :name="schema.rent.name"
                         :error="schema.rent.validation"
                         :label="schema.rent.label"
